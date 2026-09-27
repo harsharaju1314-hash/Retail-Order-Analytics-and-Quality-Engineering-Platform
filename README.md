@@ -364,6 +364,5 @@ Detailed reproduction steps, logs, and root cause analysis are documented in `de
 
 ## Author
 
-- **Harsha Raju**
-- Quality Engineering Portfolio Project
+- **Harshavardhan Varma**
 - GitHub Repository: [Retail-Order-Analytics-and-Quality-Engineering-Platform](https://github.com/harsharaju1314-hash/Retail-Order-Analytics-and-Quality-Engineering-Platform)
