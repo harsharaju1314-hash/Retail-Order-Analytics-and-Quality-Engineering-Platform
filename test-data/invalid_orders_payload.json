@@ -1,0 +1,40 @@
+{
+  "empty_payload": {},
+  "missing_customer_id": {
+    "items": [{"product_id": 1, "quantity": 1}]
+  },
+  "invalid_customer_id": {
+    "customer_id": -99,
+    "items": [{"product_id": 1, "quantity": 1}]
+  },
+  "missing_items_array": {
+    "customer_id": 1
+  },
+  "empty_items_array": {
+    "customer_id": 1,
+    "items": []
+  },
+  "zero_quantity": {
+    "customer_id": 1,
+    "items": [{"product_id": 1, "quantity": 0}]
+  },
+  "negative_quantity": {
+    "customer_id": 1,
+    "items": [{"product_id": 1, "quantity": -3}]
+  },
+  "non_existent_customer_id": {
+    "customer_id": 99999,
+    "items": [{"product_id": 1, "quantity": 1}]
+  },
+  "non_existent_product_id": {
+    "customer_id": 1,
+    "items": [{"product_id": 99999, "quantity": 1}]
+  },
+  "duplicate_product_in_items": {
+    "customer_id": 1,
+    "items": [
+      {"product_id": 1, "quantity": 1},
+      {"product_id": 1, "quantity": 2}
+    ]
+  }
+}

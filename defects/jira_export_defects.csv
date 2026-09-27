@@ -1,0 +1,5 @@
+Issue Type,Issue key,Summary,Description,Status,Priority,Severity,Component,Resolution
+Bug,RET-101,Order Search Input Cleared When Modifying Status Filter Dropdown,"Search input was lost on status dropdown trigger",Closed,P3 - Medium,Medium,Web UI,Fixed
+Bug,RET-102,PUT status endpoint rejects valid lowercase string,"API returned 400 Bad Request for lowercase status value",Closed,P2 - High,High,REST API,Fixed
+Bug,RET-103,Order Subtotal Calculation Discrepancy on Float Precision,"Float rounding mismatch between order header and item totals",Closed,P2 - High,High,Database,Fixed
+Bug,RET-104,Power BI Net Revenue KPI Overstated Due to Cancelled Orders,"DAX measure included CANCELLED orders in executive KPI",Closed,P1 - Critical,High,Power BI,Fixed

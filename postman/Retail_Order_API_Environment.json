@@ -1,0 +1,25 @@
+{
+  "id": "c1f7b744-7f12-402b-a25e-04f8e6593a11",
+  "name": "Retail Platform - Local Environment",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5000",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "customerId",
+      "value": "1",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "orderId",
+      "value": "1",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

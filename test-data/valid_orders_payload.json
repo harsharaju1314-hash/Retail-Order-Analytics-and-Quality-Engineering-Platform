@@ -1,0 +1,28 @@
+{
+  "valid_single_item_order": {
+    "customer_id": 1,
+    "payment_method": "Credit Card",
+    "shipping_address": "100 Main St, New York, NY 10001",
+    "items": [
+      {
+        "product_id": 1,
+        "quantity": 1
+      }
+    ]
+  },
+  "valid_multi_item_order": {
+    "customer_id": 2,
+    "payment_method": "PayPal",
+    "shipping_address": "200 Michigan Ave, Chicago, IL 60601",
+    "items": [
+      {
+        "product_id": 2,
+        "quantity": 2
+      },
+      {
+        "product_id": 4,
+        "quantity": 1
+      }
+    ]
+  }
+}

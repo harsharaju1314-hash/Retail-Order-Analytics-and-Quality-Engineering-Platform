@@ -1,0 +1,5 @@
+first_name,last_name,email,phone,city,state,country,postal_code
+John,Miller,john.m@test.com,555-111-2222,Miami,FL,USA,33101
+Sarah,Connor,sarah.c@test.com,555-333-4444,Los Angeles,CA,USA,90001
+David,Clark,david.clark@test.com,555-555-6666,Phoenix,AZ,USA,85001
+Emma,Watson,emma.w@test.com,555-777-8888,Seattle,WA,USA,98101

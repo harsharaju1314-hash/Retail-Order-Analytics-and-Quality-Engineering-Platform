@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Retail Order Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center pt-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-shield-lock me-2"></i>Order Portal Login</h4>
+                <p class="small mb-0 text-white-50">Quality Engineering Platform</p>
+            </div>
+            <div class="card-body p-4">
+                {% if error %}
+                    <div class="alert alert-danger py-2 small" id="login-error-alert" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ error }}
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('web.login') }}" id="login-form">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control" id="username" name="username" placeholder="admin@retail.com" required autofocus>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" id="btn-submit-login" class="btn btn-primary py-2 fw-semibold">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-4 p-2 bg-light border rounded text-muted small">
+                    <div class="fw-bold text-dark mb-1"><i class="bi bi-info-circle me-1 text-primary"></i> Demo Credentials:</div>
+                    <div><strong>Email:</strong> <code>admin@retail.com</code></div>
+                    <div><strong>Password:</strong> <code>Admin123!</code></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

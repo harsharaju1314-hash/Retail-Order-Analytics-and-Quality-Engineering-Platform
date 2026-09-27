@@ -1,0 +1,23 @@
+{
+  "benchmark_metrics": {
+    "total_orders_count": 10,
+    "active_orders_count": 9,
+    "cancelled_orders_count": 1,
+    "gross_revenue": 2457.16,
+    "net_revenue": 2307.84,
+    "average_order_value": 256.43,
+    "status_distribution": {
+      "DELIVERED": 4,
+      "CONFIRMED": 2,
+      "SHIPPED": 2,
+      "PENDING": 1,
+      "CANCELLED": 1
+    },
+    "category_revenue_distribution": {
+      "Electronics": 1166.48,
+      "Sports & Outdoors": 448.98,
+      "Home & Kitchen": 264.95,
+      "Apparel": 150.00
+    }
+  }
+}

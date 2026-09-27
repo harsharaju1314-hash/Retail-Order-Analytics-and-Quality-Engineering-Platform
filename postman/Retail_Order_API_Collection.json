@@ -1,0 +1,328 @@
+{
+  "info": {
+    "_postman_id": "a9c1e780-4821-4f7e-b7d1-93112e4f3a01",
+    "name": "Retail Order Platform - Quality Engineering API Test Suite",
+    "description": "Comprehensive Postman API test collection for Retail Order Management and Data Quality Validation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create Customer - Positive (201 Created)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Rachel\",\n  \"last_name\": \"Green\",\n  \"email\": \"rachel.green@example.com\",\n  \"phone\": \"212-555-0199\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"country\": \"USA\",\n  \"postal_code\": \"10010\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/customers", "host": ["{{baseUrl}}"], "path": ["api", "customers"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('Customer record contains ID and matching email', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.customer).to.have.property('customer_id');",
+                  "    pm.expect(json.customer.email).to.eql('rachel.green@example.com');",
+                  "    pm.collectionVariables.set('newCustomerId', json.customer.customer_id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Customer - Missing Required Field (400 Bad Request)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"MissingEmail\",\n  \"last_name\": \"User\",\n  \"city\": \"Chicago\",\n  \"state\": \"IL\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/customers", "host": ["{{baseUrl}}"], "path": ["api", "customers"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Error specifies missing email field', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.error).to.include('email');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Customer by ID (200 OK)",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/api/customers/1", "host": ["{{baseUrl}}"], "path": ["api", "customers", "1"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Customer ID is 1', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.customer_id).to.eql(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Customer - Not Found (404)",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/api/customers/9999", "host": ["{{baseUrl}}"], "path": ["api", "customers", "9999"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 Not Found', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order - Valid Multi-Item (201 Created)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"payment_method\": \"Credit Card\",\n  \"items\": [\n    {\"product_id\": 1, \"quantity\": 1},\n    {\"product_id\": 2, \"quantity\": 1}\n  ]\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('Order financial totals and items are verified', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.order.status).to.eql('PENDING');",
+                  "    pm.expect(json.order.items.length).to.eql(2);",
+                  "    pm.expect(json.order.subtotal).to.be.above(0);",
+                  "    pm.collectionVariables.set('createdOrderId', json.order.order_id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Order - Non Existent Product (404 Not Found)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"items\": [\n    {\"product_id\": 9999, \"quantity\": 1}\n  ]\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 Not Found', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Order - Invalid Quantity Zero (400 Bad Request)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"items\": [\n    {\"product_id\": 1, \"quantity\": 0}\n  ]\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Order Status - Valid Transition (200 OK)",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CONFIRMED\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/orders/5/status", "host": ["{{baseUrl}}"], "path": ["api", "orders", "5", "status"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Order status changed to CONFIRMED', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.order.status).to.eql('CONFIRMED');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Order Status - Invalid Transition (400 Bad Request)",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PENDING\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/orders/1/status", "host": ["{{baseUrl}}"], "path": ["api", "orders", "1", "status"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Orders with Status Filter (200 OK)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders?status=DELIVERED",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders"],
+              "query": [{"key": "status", "value": "DELIVERED"}]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('All orders in list are DELIVERED', function () {",
+                  "    var json = pm.response.json();",
+                  "    json.orders.forEach(function(o) {",
+                  "        pm.expect(o.status).to.eql('DELIVERED');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Analytics & Reconciliation",
+      "item": [
+        {
+          "name": "Get Analytics Summary (200 OK)",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/api/analytics/summary", "host": ["{{baseUrl}}"], "path": ["api", "analytics", "summary"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Analytics response contains KPIs and category stats', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.kpis).to.have.property('total_orders');",
+                  "    pm.expect(json.kpis).to.have.property('total_revenue');",
+                  "    pm.expect(json.kpis).to.have.property('avg_order_value');",
+                  "    pm.expect(json.revenue_by_category.length).to.be.above(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {"key": "baseUrl", "value": "http://127.0.0.1:5000", "type": "string"},
+    {"key": "newCustomerId", "value": "1", "type": "string"},
+    {"key": "createdOrderId", "value": "1", "type": "string"}
+  ]
+}
